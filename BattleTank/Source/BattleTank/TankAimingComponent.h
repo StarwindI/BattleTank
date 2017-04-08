@@ -21,7 +21,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 		
-	void AimAt(FVector HitLocation, FColor TraceColor) const;
+	void AimAt(FVector HitLocation, float LounchSpeed, FColor TraceColor) const;
 	
 	void SetBarrel(UStaticMeshComponent* ABarrel);
 

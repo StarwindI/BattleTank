@@ -26,18 +26,36 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, FColor TraceColor) const
+void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, FColor TraceColor) const
 {
-	DrawDebugLine(
-		GetWorld(),
-		GetOwner()->GetActorLocation(),
-		HitLocation,
-		TraceColor,
-		false,
-		0.0f,
-		0.0f,
-		3.0f
-	);
+	FVector OutLounchVelocity;
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+
+	if (UGameplayStatics::SuggestProjectileVelocity
+		(
+			this,
+			OutLounchVelocity,
+			StartLocation,
+			HitLocation,
+			LounchSpeed,
+			false,
+			0,
+			0,
+			ESuggestProjVelocityTraceOption::DoNotTrace
+	   )
+	) {
+		FVector AimDirection = OutLounchVelocity.GetSafeNormal();
+		DrawDebugLine(
+			GetWorld(),
+			StartLocation,
+			HitLocation,
+			TraceColor,
+			false,
+			0.0f,
+			0.0f,
+			3.0f
+		);
+	}
 }
 
 void UTankAimingComponent::SetBarrel(UStaticMeshComponent* ABarrel)

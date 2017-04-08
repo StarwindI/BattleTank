@@ -33,7 +33,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::AimAt(FVector HitLocation, FColor TraceColor) const
 {
-	TankAimingComponent->AimAt(HitLocation, TraceColor);
+	TankAimingComponent->AimAt(HitLocation, LounchSpeed, TraceColor);
 }
 
 void ATank::SetBarrel(UStaticMeshComponent* ABarrel)

@@ -32,4 +32,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrel(UStaticMeshComponent* ABarrel);
 
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float LounchSpeed = 10000.0f;
+
 };
