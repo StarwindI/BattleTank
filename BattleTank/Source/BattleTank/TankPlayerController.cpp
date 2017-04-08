@@ -6,9 +6,9 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	ATank* tank = GetContolledTank();
-	if (tank) {
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController: tank %s is ready!"), *tank->GetName())
+	ControlledTank = GetContolledTank();
+	if (ControlledTank) {
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController: tank %s is ready!"), *ControlledTank->GetName())
 	} else {
 		UE_LOG(LogTemp, Error, TEXT("PlayerController: tank not found!"))
 	}
@@ -27,37 +27,55 @@ ATank* ATankPlayerController::GetContolledTank() const
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetContolledTank()) { return; }
-	FVector HitLocation;
-	if (GetSightRayHitLocation(HitLocation)) {
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString())
+	if (GetContolledTank()) {
+		FVector HitLocation;
+		if (GetSightRayHitLocation(HitLocation)) {
+//			UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString())
+			ControlledTank->AimAt(HitLocation);
+		}
 	}
 }
 
-bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLoction) const
+bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 {
-	FVector WorldLoction;
 	int32 SizeX, SizeY;
 	GetViewportSize(SizeX, SizeY);
-	FVector2D ScreenLocation = FVector2D(CrosshairXLocation * SizeX, CrosshairYLocation * SizeY - 10);
-	DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLoction, HitLoction);
+	FVector2D ScreenLocation = FVector2D(CrosshairXLocation * SizeX, CrosshairYLocation * SizeY);
+	FVector LookDirection;
+	if (GetLookDirection(ScreenLocation, LookDirection)) {
+		return GetLookVectorHitLocation(LookDirection, HitLocation);
+	} else {
+		return false;
+	}
+}
 
-	HitLoction *= 20000;
-	FVector Position;
-	FRotator Rotattion;
-	GetPlayerViewPoint(OUT Position, OUT Rotattion);
-	FVector TraceEnd = Position + Rotattion.Vector() * 1000;
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
+{
+	FVector WorldLoction;
+	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLoction, LookDirection);
+}
 
-	DrawDebugLine(
-		GetWorld(),
-		TraceEnd,
-		HitLoction,
-		FColor(255, 0, 0),
-		false,
-		0.0f,
-		0.0f,
-		2.0f
-	);
-
-	return true;
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const
+{
+	FHitResult HitResult;
+	FVector StartLocation;
+	StartLocation = PlayerCameraManager->GetCameraLocation();
+	FVector EndLocation = StartLocation + LookDirection * LineTraceRange;
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility)) {
+		StartLocation = ControlledTank->GetActorLocation();
+		HitLocation = HitResult.Location;
+		DrawDebugLine(
+			GetWorld(),
+			StartLocation,
+			HitLocation,
+			FColor(255, 0, 0),
+			false,
+			0.0f,
+			0.0f,
+			3.0f
+		);
+		return true;
+	} else {
+		return false;
+	}
 }
