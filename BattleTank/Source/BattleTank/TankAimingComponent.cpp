@@ -31,7 +31,7 @@ void UTankAimingComponent::SetBarrel(UStaticMeshComponent* ABarrel)
 	Barrel = ABarrel;
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, FColor TraceColor) const
+void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, FColor TraceColor) 
 {
 	FVector OutLounchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -48,6 +48,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, FColor 
 	);
 	if (bHaveAimSolution) {
 		FVector AimDirection = OutLounchVelocity.GetSafeNormal();
+		MoveBarrelTowards(AimDirection);
 		DrawDebugLine(
 			GetWorld(),
 			StartLocation,
