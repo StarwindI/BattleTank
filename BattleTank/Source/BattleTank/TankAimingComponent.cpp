@@ -28,10 +28,9 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 void UTankAimingComponent::AimAt(FVector HitLocation, FColor TraceColor) const
 {
-	FVector StartLocation = GetOwner()->GetActorLocation();
 	DrawDebugLine(
 		GetWorld(),
-		StartLocation,
+		GetOwner()->GetActorLocation(),
 		HitLocation,
 		TraceColor,
 		false,
@@ -39,7 +38,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation, FColor TraceColor) const
 		0.0f,
 		3.0f
 	);
-	//	UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s"), *GetName(), *HitLocation.ToString())
 }
 
-
+void UTankAimingComponent::SetBarrel(UStaticMeshComponent* ABarrel)
+{
+	Barrel = ABarrel;
+}

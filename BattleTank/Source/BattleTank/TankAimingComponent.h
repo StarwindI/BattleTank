@@ -22,5 +22,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 		
 	void AimAt(FVector HitLocation, FColor TraceColor) const;
+	
+	void SetBarrel(UStaticMeshComponent* ABarrel);
 
+protected:
+	UStaticMeshComponent* Barrel = nullptr;
 };

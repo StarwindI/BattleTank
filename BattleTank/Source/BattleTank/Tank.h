@@ -29,4 +29,7 @@ public:
 
 	void AimAt(FVector HitLocation, FColor TraceColor) const;
 
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetBarrel(UStaticMeshComponent* ABarrel);
+
 };

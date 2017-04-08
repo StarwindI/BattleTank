@@ -29,7 +29,6 @@ void ATank::Tick(float DeltaTime)
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void ATank::AimAt(FVector HitLocation, FColor TraceColor) const
@@ -37,3 +36,7 @@ void ATank::AimAt(FVector HitLocation, FColor TraceColor) const
 	TankAimingComponent->AimAt(HitLocation, TraceColor);
 }
 
+void ATank::SetBarrel(UStaticMeshComponent* ABarrel)
+{
+	TankAimingComponent->SetBarrel(ABarrel);
+}
