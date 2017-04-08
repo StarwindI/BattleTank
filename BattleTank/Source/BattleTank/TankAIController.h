@@ -12,7 +12,15 @@ class BATTLETANK_API ATankAIController : public AAIController
 	GENERATED_BODY()
 	
 private:
-	virtual void BeginPlay() override;
-
+	ATank* ControlledTank;
+	ATank* EnemyTank;
 	ATank* GetContolledTank(bool _player);
+	void AimTowardsEnenmyTank();
+	bool GetSightRayHitLocation(FVector& HitLocation) const;
+
+public:
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditAnywhere)
+		float DistanceRange = 1000000.0f;
 };
