@@ -33,8 +33,19 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ATank::AimAt(FVector HitLocation) const
+void ATank::AimAt(FVector HitLocation, FColor TraceColor) const
 {
-//	UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s"), *GetName(), *HitLocation.ToString())
+	FVector StartLocation = GetActorLocation();
+	DrawDebugLine(
+		GetWorld(),
+		StartLocation,
+		HitLocation,
+		TraceColor,
+		false,
+		0.0f,
+		0.0f,
+		3.0f
+	);
+	//	UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s"), *GetName(), *HitLocation.ToString())
 }
 
