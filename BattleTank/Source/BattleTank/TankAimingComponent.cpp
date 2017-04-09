@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "TankBarrel.h"
 #include "TankAimingComponent.h"
-
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent() 
@@ -12,21 +12,7 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
-
-void UTankAimingComponent::SetBarrel(UStaticMeshComponent* ABarrel)
+void UTankAimingComponent::SetBarrel(UTankBarrel* ABarrel)
 {
 	Barrel = ABarrel;
 }
@@ -64,5 +50,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, FColor 
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
-	
+	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
+	FRotator AimAsRotator = AimDirection.Rotation();
+	Barrel->Elevate(5);
 }
