@@ -35,7 +35,7 @@ public:
 	void SetBarrel(UTankBarrel* ABarrel);
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-		float LounchSpeed = 10000.0f;
+		float LounchSpeed = 8000.0f;
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float DistanceRange = 100000.0f;
 
