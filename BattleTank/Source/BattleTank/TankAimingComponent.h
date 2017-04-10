@@ -16,7 +16,7 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 		
-	void AimAt(FVector HitLocation, float LounchSpeed, FColor TraceColor);
+	void AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange);
 	
 	void SetBarrel(UTankBarrel* ABarrel);
 

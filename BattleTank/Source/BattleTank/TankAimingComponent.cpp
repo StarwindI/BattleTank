@@ -17,7 +17,7 @@ void UTankAimingComponent::SetBarrel(UTankBarrel* ABarrel)
 	Barrel = ABarrel;
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, FColor TraceColor) 
+void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange)
 {
 	FVector OutLounchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -34,6 +34,12 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, FColor 
 	);
 	if (bHaveAimSolution) {
 		float TargetDistance = FVector::Distance(StartLocation, HitLocation);
+		FColor TraceColor;
+		if (TargetDistance <= DistanceRange) {
+			TraceColor = FColor(0, 0, 255);
+		} else {
+			TraceColor = FColor(255, 0, 0);
+		}
 		UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent: %f"), TargetDistance)
 		FVector AimDirection = OutLounchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);

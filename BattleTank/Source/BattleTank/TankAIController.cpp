@@ -49,7 +49,7 @@ void ATankAIController::AimTowardsEnenmyTank()
 	if (EnemyTank) {
 		FVector HitLocation;
 		if (GetSightRayHitLocation(HitLocation)) {
-			ControlledTank->AimAt(HitLocation, FColor(255, 0, 0));
+			ControlledTank->AimAt(HitLocation);
 		}
 	}
 }

@@ -23,9 +23,9 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ATank::AimAt(FVector HitLocation, FColor TraceColor) const
+void ATank::AimAt(FVector HitLocation) const
 {
-	TankAimingComponent->AimAt(HitLocation, LounchSpeed, TraceColor);
+	TankAimingComponent->AimAt(HitLocation, LounchSpeed, DistanceRange);
 }
 
 void ATank::SetBarrel(UTankBarrel* ABarrel)

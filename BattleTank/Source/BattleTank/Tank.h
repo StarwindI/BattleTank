@@ -26,7 +26,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void AimAt(FVector HitLocation, FColor TraceColor) const;
+	void AimAt(FVector HitLocation) const;
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrel(UTankBarrel* ABarrel);
@@ -34,6 +34,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float LounchSpeed = 10000.0f;
 	UPROPERTY(EditAnywhere, Category = Firing)
-		float DistanceRange = 300000.0f;
+		float DistanceRange = 100000.0f;
 
 };

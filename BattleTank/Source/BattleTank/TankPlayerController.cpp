@@ -31,7 +31,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 		FVector HitLocation;
 		if (GetSightRayHitLocation(HitLocation)) {
 //			UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString())
-			ControlledTank->AimAt(HitLocation, FColor(0, 0, 255));
+			ControlledTank->AimAt(HitLocation);
 		}
 	}
 }
@@ -60,7 +60,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	FHitResult HitResult;
 	FVector StartLocation;
 	StartLocation = PlayerCameraManager->GetCameraLocation();
-	FVector EndLocation = StartLocation + LookDirection * ControlledTank->DistanceRange;
+	FVector EndLocation = StartLocation + LookDirection * DistanceLook;
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility)) {
 		HitLocation = HitResult.Location;
 		return true;
