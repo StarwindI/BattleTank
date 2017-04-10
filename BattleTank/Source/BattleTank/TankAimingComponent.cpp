@@ -40,7 +40,8 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float D
 		} else {
 			TraceColor = FColor(255, 0, 0);
 		}
-		UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent: %f"), TargetDistance)
+//		float Time = GetWorld()->GetTimeSeconds();
+//		UE_LOG(LogTemp, Warning, TEXT("%f UTankAimingComponent: %f"), Time, TargetDistance)
 		FVector AimDirection = OutLounchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
 		DrawDebugLine(
@@ -58,7 +59,11 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float D
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
+
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
-	Barrel->Elevate(5);
+	FRotator DeltaRotator = AimAsRotator - BarrelRotator;
+
+	Barrel->Elevate(DeltaRotator.Pitch);
+//	Barrel->Turn(DeltaRotator.Yaw);
 }
