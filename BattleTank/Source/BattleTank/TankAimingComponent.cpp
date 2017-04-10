@@ -33,6 +33,8 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, FColor 
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 	if (bHaveAimSolution) {
+		float TargetDistance = FVector::Distance(StartLocation, HitLocation);
+		UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent: %f"), TargetDistance)
 		FVector AimDirection = OutLounchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
 		DrawDebugLine(
