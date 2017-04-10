@@ -27,9 +27,9 @@ ATank* ATankAIController::GetContolledTank(bool _player)
 	}
 	if (result) {
 		if (_player) {
-			UE_LOG(LogTemp, Warning, TEXT("AIController: player tank %s was found!"), *result->GetName())
+			UE_LOG(LogTemp, Warning, TEXT("AIController: player tank %s was found at location %s"), *result->GetName(), *result->GetActorLocation().ToString())
 		} else {
-			UE_LOG(LogTemp, Warning, TEXT("AIController: tank %s is ready!"), *result->GetName())
+			UE_LOG(LogTemp, Warning, TEXT("AIController: tank %s is ready at location %s"), *result->GetName(), *result->GetActorLocation().ToString())
 		}
 		return result;
 	} else {
@@ -44,9 +44,11 @@ ATank* ATankAIController::GetContolledTank(bool _player)
 
 void ATankAIController::AimTowardsEnenmyTank()
 {
+/*
 	if (!EnemyTank) {
 		EnemyTank = GetContolledTank(true);
 	}
+*/
 	if (EnemyTank) {
 		FVector HitLocation;
 		if (GetSightRayHitLocation(HitLocation)) {
