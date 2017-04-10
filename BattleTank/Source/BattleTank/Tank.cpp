@@ -29,6 +29,11 @@ void ATank::AimAt(FVector HitLocation) const
 	TankAimingComponent->AimAt(HitLocation, LounchSpeed, DistanceRange);
 }
 
+void ATank::SetTurret(UTankTurret* ATurret)
+{
+	TankAimingComponent->SetTurret(ATurret);
+}
+
 void ATank::SetBarrel(UTankBarrel* ABarrel)
 {
 	TankAimingComponent->SetBarrel(ABarrel);

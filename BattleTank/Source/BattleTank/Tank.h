@@ -6,6 +6,7 @@
 #include "Tank.generated.h"
 
 class UTankAimingComponent;
+class UTankTurret;
 class UTankBarrel;
 
 UCLASS()
@@ -28,6 +29,8 @@ public:
 
 	void AimAt(FVector HitLocation) const;
 
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurret(UTankTurret* ATurret);
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrel(UTankBarrel* ABarrel);
 
