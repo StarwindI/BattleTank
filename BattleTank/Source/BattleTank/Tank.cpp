@@ -38,3 +38,7 @@ void ATank::SetBarrel(UTankBarrel* ABarrel)
 {
 	TankAimingComponent->SetBarrel(ABarrel);
 }
+
+void ATank::Fire() {
+	UE_LOG(LogTemp, Warning, TEXT("Tank: %s fire"), *GetName())
+}

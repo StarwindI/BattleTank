@@ -33,6 +33,8 @@ public:
 	void SetTurret(UTankTurret* ATurret);
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrel(UTankBarrel* ABarrel);
+	UFUNCTION(BlueprintCallable)
+	void Fire();
 
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float LounchSpeed = 8000.0f;
