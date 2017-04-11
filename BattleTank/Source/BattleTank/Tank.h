@@ -8,6 +8,7 @@
 class UTankAimingComponent;
 class UTankTurret;
 class UTankBarrel;
+class AProjectile;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -40,5 +41,10 @@ public:
 		float LounchSpeed = 8000.0f;
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float DistanceRange = 100000.0f;
+	UPROPERTY(EditAnywhere, Category = Setup)
+		TSubclassOf<AProjectile> ProjectileBlueprint;
+
+private:
+	UTankBarrel* Barrel = nullptr;
 
 };
