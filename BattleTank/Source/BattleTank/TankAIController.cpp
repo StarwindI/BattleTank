@@ -15,6 +15,9 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	AimTowardsEnenmyTank();
+
+	ControlledTank->Fire();
+
 }
 
 ATank* ATankAIController::GetContolledTank(bool _player) 
@@ -44,11 +47,6 @@ ATank* ATankAIController::GetContolledTank(bool _player)
 
 void ATankAIController::AimTowardsEnenmyTank()
 {
-/*
-	if (!EnemyTank) {
-		EnemyTank = GetContolledTank(true);
-	}
-*/
 	if (EnemyTank) {
 		FVector HitLocation;
 		if (GetSightRayHitLocation(HitLocation)) {

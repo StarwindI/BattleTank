@@ -10,18 +10,15 @@ class BATTLETANK_API AProjectile : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	AProjectile();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UProjectileMovementComponent* ProjectileMovement = nullptr;
 
 public:	
+	// Sets default values for this actor's properties
+	AProjectile();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	
-	
+	void LaunchProjectile(float Speed);
 };

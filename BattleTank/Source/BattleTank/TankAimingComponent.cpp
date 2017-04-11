@@ -50,7 +50,8 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float D
 //		UE_LOG(LogTemp, Warning, TEXT("%f UTankAimingComponent: %f"), Time, TargetDistance)
 		FVector AimDirection = OutLounchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
-		DrawDebugLine(
+/*
+DrawDebugLine(
 			GetWorld(),
 			StartLocation,
 			HitLocation,
@@ -60,6 +61,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float D
 			0.0f,
 			3.0f
 		);
+*/
 	}
 }
 

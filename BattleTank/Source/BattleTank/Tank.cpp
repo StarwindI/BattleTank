@@ -43,12 +43,15 @@ void ATank::SetBarrel(UTankBarrel* ABarrel)
 }
 
 void ATank::Fire() {
-	if (Barrel) {
-		GetWorld()->SpawnActor<AProjectile>(
-			ProjectileBlueprint,
-			Barrel->GetSocketLocation(FName("Projectile")),
-			Barrel->GetSocketRotation(FName("Projectile"))
-		);
-		UE_LOG(LogTemp, Warning, TEXT("Tank: %s fire"), *GetName())
+	if (FPlatformTime::Seconds() >= NextFireTime && Barrel) {
+//		UE_LOG(LogTemp, Warning, TEXT("Tank: %s fire"), *GetName())
+		AProjectile* Projectile =
+			GetWorld()->SpawnActor<AProjectile>(
+				ProjectileBlueprint,
+				Barrel->GetSocketLocation(FName("Projectile")),
+				Barrel->GetSocketRotation(FName("Projectile"))
+			);
+		Projectile->LaunchProjectile(LounchSpeed);
+		NextFireTime = FPlatformTime::Seconds() + ReloadTime;
 	}
 }

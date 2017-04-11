@@ -38,6 +38,8 @@ public:
 	void Fire();
 
 	UPROPERTY(EditAnywhere, Category = Firing)
+		float ReloadTime = 1.0f;
+	UPROPERTY(EditAnywhere, Category = Firing)
 		float LounchSpeed = 8000.0f;
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float DistanceRange = 100000.0f;
@@ -46,5 +48,6 @@ public:
 
 private:
 	UTankBarrel* Barrel = nullptr;
+	float NextFireTime = FPlatformTime::Seconds();
 
 };
