@@ -1,5 +1,6 @@
 #include "BattleTank.h"
 #include "TankBarrel.h"
+// #include "TankTrack.h"
 #include "Projectile.h"
 #include "TankAimingComponent.h"
 #include "Tank.h"
@@ -24,6 +25,10 @@ void ATank::SetTurret(UTankTurret* ATurret) {
 void ATank::SetBarrel(UTankBarrel* ABarrel) {
 	Barrel = ABarrel;
 	TankAimingComponent->SetBarrel(ABarrel);
+}
+
+void ATank::SetTracks(UTankTrack* ALeftTrack, UTankTrack* ARightTrack) {
+
 }
 
 FVector ATank::GetBarrelStartLocation() const {
