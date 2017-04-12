@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "Components/ActorComponent.h"
@@ -13,18 +11,16 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY() 
 
-public:	
-	// Sets default values for this component's properties
-	UTankAimingComponent();
-		
-	void AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange);
-	
-	void SetTurret(UTankTurret* ATurret);
-	void SetBarrel(UTankBarrel* ABarrel);
-
 protected:
 	UTankTurret* Turret = nullptr;
 	UTankBarrel* Barrel = nullptr;
 
-	void MoveBarrelTowards(FVector AimDirection);
+	bool MoveBarrelTowards(FVector AimDirection);
+
+public:	
+	UTankAimingComponent();
+
+	bool AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange);
+	void SetTurret(UTankTurret* ATurret);
+	void SetBarrel(UTankBarrel* ABarrel);
 };

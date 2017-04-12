@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "GameFramework/Pawn.h"
@@ -15,39 +13,33 @@ class BATTLETANK_API ATank : public APawn
 {
 	GENERATED_BODY()
 
-protected:
-	UTankAimingComponent* TankAimingComponent = nullptr;
-
-public:
-	// Sets default values for this pawn's properties
-	ATank();
-
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	void AimAt(FVector HitLocation) const;
-
-	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetTurret(UTankTurret* ATurret);
-	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetBarrel(UTankBarrel* ABarrel);
-	UFUNCTION(BlueprintCallable)
-	void Fire();
-
-	UPROPERTY(EditAnywhere, Category = Firing)
-		float ReloadTime = 1.0f;
-	UPROPERTY(EditAnywhere, Category = Firing)
-		float LounchSpeed = 8000.0f;
-	UPROPERTY(EditAnywhere, Category = Firing)
-		float DistanceRange = 100000.0f;
-	UPROPERTY(EditAnywhere, Category = Setup)
-		TSubclassOf<AProjectile> ProjectileBlueprint;
-
 private:
 	UTankBarrel* Barrel = nullptr;
 	float NextFireTime = FPlatformTime::Seconds();
 
+protected:
+	UTankAimingComponent* TankAimingComponent = nullptr;
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float ReloadTime = 1.0f;
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float LounchSpeed = 8000.0f;
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float DistanceRange = 100000.0f;
+	UPROPERTY(EditAnywhere, Category = Setup)
+		TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	ATank();
+	virtual void BeginPlay() override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	FVector GetBarrelStartLocation() const;
+	void MoveTo(FVector HitLocation) const;
+	bool AimAt(FVector HitLocation) const;
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetTurret(UTankTurret* ATurret);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetBarrel(UTankBarrel* ABarrel);
+	UFUNCTION(BlueprintCallable)
+		void Fire();
 };

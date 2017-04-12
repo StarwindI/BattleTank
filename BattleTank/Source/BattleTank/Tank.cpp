@@ -1,50 +1,50 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "BattleTank.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
 #include "TankAimingComponent.h"
 #include "Tank.h"
 
-// Sets default values
-ATank::ATank()
-{
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ATank::ATank() {
 	PrimaryActorTick.bCanEverTick = false;
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 }
 
-// Called when the game starts or when spawned
-void ATank::BeginPlay()
-{
+void ATank::BeginPlay() {
 	Super::BeginPlay();
 }
 
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
+void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ATank::AimAt(FVector HitLocation) const
-{
-	TankAimingComponent->AimAt(HitLocation, LounchSpeed, DistanceRange);
-}
-
-void ATank::SetTurret(UTankTurret* ATurret)
-{
+void ATank::SetTurret(UTankTurret* ATurret) {
 	TankAimingComponent->SetTurret(ATurret);
 }
 
-void ATank::SetBarrel(UTankBarrel* ABarrel)
-{
+void ATank::SetBarrel(UTankBarrel* ABarrel) {
 	Barrel = ABarrel;
 	TankAimingComponent->SetBarrel(ABarrel);
 }
 
+FVector ATank::GetBarrelStartLocation() const {
+	if (Barrel) {
+		return Barrel->GetSocketLocation(FName("Projectile"));
+	}
+	else {
+		return FVector(0);
+	}
+}
+
+void ATank::MoveTo(FVector HitLocation) const {
+	// TODO
+}
+
+bool ATank::AimAt(FVector HitLocation) const {
+	return TankAimingComponent->AimAt(HitLocation, LounchSpeed, DistanceRange);
+}
+
 void ATank::Fire() {
 	if (FPlatformTime::Seconds() >= NextFireTime && Barrel) {
-//		UE_LOG(LogTemp, Warning, TEXT("Tank: %s fire"), *GetName())
 		AProjectile* Projectile =
 			GetWorld()->SpawnActor<AProjectile>(
 				ProjectileBlueprint,
@@ -55,3 +55,4 @@ void ATank::Fire() {
 		NextFireTime = FPlatformTime::Seconds() + ReloadTime;
 	}
 }
+

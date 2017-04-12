@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "BattleTank.h"
 #include "Tank.h"
 #include "TankAIController.h"
@@ -15,9 +13,6 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	AimTowardsEnenmyTank();
-
-	ControlledTank->Fire();
-
 }
 
 ATank* ATankAIController::GetContolledTank(bool _player) 
@@ -50,7 +45,13 @@ void ATankAIController::AimTowardsEnenmyTank()
 	if (EnemyTank) {
 		FVector HitLocation;
 		if (GetSightRayHitLocation(HitLocation)) {
-			ControlledTank->AimAt(HitLocation);
+			if (FVector::Distance(ControlledTank->GetBarrelStartLocation(), HitLocation) <= ControlledTank->DistanceRange) {
+				if (ControlledTank->AimAt(HitLocation)) {
+					ControlledTank->Fire();
+				}
+			} else {
+				ControlledTank->MoveTo(HitLocation);
+			}
 		}
 	}
 }
@@ -65,4 +66,3 @@ bool ATankAIController::GetSightRayHitLocation(FVector& HitLocation) const
 		return false;
 	}
 }
-

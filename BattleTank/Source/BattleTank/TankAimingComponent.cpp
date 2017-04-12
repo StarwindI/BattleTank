@@ -1,15 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "BattleTank.h"
 #include "TankTurret.h"
 #include "TankBarrel.h"
 #include "TankAimingComponent.h"
 
-// Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent() 
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
@@ -23,7 +18,7 @@ void UTankAimingComponent::SetBarrel(UTankBarrel* ABarrel)
 	Barrel = ABarrel;
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange)
+bool UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange)
 {
 	FVector OutLounchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -39,33 +34,14 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float D
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 	if (bHaveAimSolution) {
-		float TargetDistance = FVector::Distance(StartLocation, HitLocation);
-		FColor TraceColor;
-		if (TargetDistance <= DistanceRange) {
-			TraceColor = FColor(0, 0, 255);
-		} else {
-			TraceColor = FColor(255, 0, 0);
-		}
-//		float Time = GetWorld()->GetTimeSeconds();
-//		UE_LOG(LogTemp, Warning, TEXT("%f UTankAimingComponent: %f"), Time, TargetDistance)
 		FVector AimDirection = OutLounchVelocity.GetSafeNormal();
-		MoveBarrelTowards(AimDirection);
-/*
-DrawDebugLine(
-			GetWorld(),
-			StartLocation,
-			HitLocation,
-			TraceColor,
-			false,
-			0.0f,
-			0.0f,
-			3.0f
-		);
-*/
+		return MoveBarrelTowards(AimDirection);
+	} else {
+		return false;
 	}
 }
 
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+bool UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
@@ -76,7 +52,16 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	if (DeltaRotator.Yaw < -180) {
 		DeltaRotator.Yaw += 360;
 	}
-//	UE_LOG(LogTemp, Warning, TEXT("Barrel: %f Aim %f Delta %f"), BarrelRotator.Yaw, AimAsRotator.Yaw, DeltaRotator.Yaw)
+	bool is_elevated = FMath::Abs(DeltaRotator.Pitch) < 1;
 	Turret->Turn(DeltaRotator.Yaw);
 	Barrel->Elevate(DeltaRotator.Pitch);
+/*
+	FHitResult HitResult;
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+	FVector EndLocation = StartLocation + Barrel->GetForwardVector() * DistanceLook;
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility)) {
+		HitResult.Actor;
+	}
+*/
+	return FMath::Abs(DeltaRotator.Yaw) < 1 && FMath::Abs(DeltaRotator.Pitch) < 1;
 }
