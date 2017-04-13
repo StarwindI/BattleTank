@@ -51,8 +51,8 @@ void ATank::Fire() {
 				Barrel->GetSocketLocation(FName("Projectile")),
 				Barrel->GetSocketRotation(FName("Projectile"))
 			);
-		Projectile->LaunchProjectile(LounchSpeed);
 		NextFireTime = FPlatformTime::Seconds() + ReloadTime;
+		Projectile->LaunchProjectile(LounchSpeed);
 	}
 }
 
