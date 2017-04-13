@@ -4,7 +4,7 @@
 #include "Tank.generated.h"
 
 class UTankAimingComponent;
-//class UTankMovingComponent;
+class UTankMovementComponent;
 class UTankTurret;
 class UTankBarrel;
 class AProjectile;
@@ -20,7 +20,7 @@ private:
 
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
-//	UTankMovingComponent* TankAimingComponent = nullptr;
+	UTankMovementComponent* TankMovementComponent = nullptr;
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
