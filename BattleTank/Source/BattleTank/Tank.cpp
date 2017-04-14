@@ -8,7 +8,7 @@
 ATank::ATank() {
 	PrimaryActorTick.bCanEverTick = false;
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
-	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
+//	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 }
 
 void ATank::BeginPlay() {
@@ -38,7 +38,6 @@ FVector ATank::GetBarrelStartLocation() const {
 }
 
 void ATank::MoveTo(FVector HitLocation) const {
-//	TankMovementComponent->IntendMoveForward();
 }
 
 bool ATank::AimAt(FVector HitLocation) const {

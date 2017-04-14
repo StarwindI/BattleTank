@@ -20,17 +20,18 @@ private:
 
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
+	UPROPERTY(BlueprintReadOnly)
 	UTankMovementComponent* TankMovementComponent = nullptr;
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-		float ReloadTime = 1.0f;
+	float ReloadTime = 1.0f;
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-		float LounchSpeed = 8000.0f;
+	float LounchSpeed = 8000.0f;
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-		float DistanceRange = 100000.0f;
+	float DistanceRange = 100000.0f;
 	UPROPERTY(EditAnywhere, Category = Setup)
-		TSubclassOf<AProjectile> ProjectileBlueprint;
+	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	ATank();
 	virtual void BeginPlay() override;
@@ -39,9 +40,9 @@ public:
 	void MoveTo(FVector HitLocation) const;
 	bool AimAt(FVector HitLocation) const;
 	UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetTurret(UTankTurret* ATurret);
+	void SetTurret(UTankTurret* ATurret);
 	UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetBarrel(UTankBarrel* ABarrel);
+	void SetBarrel(UTankBarrel* ABarrel);
 	UFUNCTION(BlueprintCallable)
-		void Fire();
+	void Fire();
 };
