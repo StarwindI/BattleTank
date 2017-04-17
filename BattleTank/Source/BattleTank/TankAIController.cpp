@@ -50,7 +50,8 @@ void ATankAIController::AimTowardsEnenmyTank()
 					ControlledTank->Fire();
 				}
 			} else {
-				ControlledTank->MoveTo(HitLocation);
+				MoveToActor(EnemyTank, ControlledTank->DistanceRange);
+				ControlledTank->AimAt(HitLocation);
 			}
 		}
 	}

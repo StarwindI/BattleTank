@@ -29,7 +29,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LounchSpeed = 8000.0f;
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float DistanceRange = 100000.0f;
+	float DistanceRange = 30000.0f;
 	UPROPERTY(EditAnywhere, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
