@@ -37,9 +37,6 @@ FVector ATank::GetBarrelStartLocation() const {
 	}
 }
 
-void ATank::MoveTo(FVector HitLocation) const {
-}
-
 bool ATank::AimAt(FVector HitLocation) const {
 	return TankAimingComponent->AimAt(HitLocation, LounchSpeed, DistanceRange);
 }
