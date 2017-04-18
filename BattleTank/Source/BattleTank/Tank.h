@@ -16,7 +16,7 @@ class BATTLETANK_API ATank : public APawn
 
 private:
 	UTankBarrel* Barrel = nullptr;
-	float NextFireTime = FPlatformTime::Seconds() + ReloadTime;
+	float FireTime;
 
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
@@ -25,7 +25,7 @@ protected:
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float ReloadTime = 1.0f;
+	float ReloadTime = 2.0f;
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LounchSpeed = 8000.0f;
 	UPROPERTY(EditDefaultsOnly, Category = Firing)

@@ -8,11 +8,11 @@
 ATank::ATank() {
 	PrimaryActorTick.bCanEverTick = false;
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
-//	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 }
 
 void ATank::BeginPlay() {
 	Super::BeginPlay();
+	FireTime = FPlatformTime::Seconds();
 }
 
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
@@ -45,14 +45,14 @@ bool ATank::AimAt(FVector HitLocation) const {
 }
 
 void ATank::Fire() {
-	if (FPlatformTime::Seconds() >= NextFireTime && Barrel) {
+	if (Barrel && FPlatformTime::Seconds() >= FireTime + ReloadTime) {
 		AProjectile* Projectile =
 			GetWorld()->SpawnActor<AProjectile>(
 				ProjectileBlueprint,
 				Barrel->GetSocketLocation(FName("Projectile")),
 				Barrel->GetSocketRotation(FName("Projectile"))
 			);
-		NextFireTime = FPlatformTime::Seconds() + ReloadTime;
+		FireTime = FPlatformTime::Seconds();
 		Projectile->LaunchProjectile(LounchSpeed);
 	}
 }
