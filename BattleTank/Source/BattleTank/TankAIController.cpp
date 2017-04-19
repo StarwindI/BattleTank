@@ -51,7 +51,8 @@ void ATankAIController::AimTowardsEnenmyTank()
 				}
 			} else {
 				ControlledTank->AimAt(HitLocation);
-				MoveToActor(EnemyTank, ControlledTank->DistanceRange);
+				MoveToActor(EnemyTank, ControlledTank->DistanceRange); // не работает
+				ControlledTank->MoveTo(EnemyTank, ControlledTank->DistanceRange);
 			}
 		}
 	}

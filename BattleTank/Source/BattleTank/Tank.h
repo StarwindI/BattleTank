@@ -44,4 +44,5 @@ public:
 	void SetBarrel(UTankBarrel* ABarrel);
 	UFUNCTION(BlueprintCallable)
 	void Fire();
+	void MoveTo(AActor* Goal, float AcceptanceRadius);
 };

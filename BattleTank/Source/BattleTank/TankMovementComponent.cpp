@@ -21,6 +21,21 @@ void UTankMovementComponent::IntendTurnRight(float Throw) {
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw / 2);
 }
-void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) {
-	UE_LOG(LogTemp, Warning, TEXT("tank %s vectoring to %s"), *GetOwner()->GetName(), *MoveVelocity.ToString())
+
+void UTankMovementComponent::IntendMove(FVector TargetLocation) {
+	FVector SelfForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+
+	FRotator TargetRotator = TargetLocation.Rotation();
+	FRotator SelfRotator = SelfForward.Rotation();
+	FRotator DeltaRotator = SelfRotator - TargetRotator;
+
+	LeftTrack->SetThrottle(FMath::Cos(DeltaRotator.Yaw) - FMath::Sin(DeltaRotator.Yaw));
+	RightTrack->SetThrottle(FMath::Cos(DeltaRotator.Yaw) + FMath::Sin(DeltaRotator.Yaw));
+	
 }
+
+
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) {
+	IntendMove(MoveVelocity.GetSafeNormal());
+}
+

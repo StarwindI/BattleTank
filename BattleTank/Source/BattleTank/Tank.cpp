@@ -13,6 +13,7 @@ ATank::ATank() {
 void ATank::BeginPlay() {
 	Super::BeginPlay();
 	FireTime = FPlatformTime::Seconds();
+	TankMovementComponent = FindComponentByClass<UTankMovementComponent>();
 }
 
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
@@ -49,8 +50,14 @@ void ATank::Fire() {
 				Barrel->GetSocketLocation(FName("Projectile")),
 				Barrel->GetSocketRotation(FName("Projectile"))
 			);
-		FireTime = FPlatformTime::Seconds();
 		Projectile->LaunchProjectile(LounchSpeed);
+		FireTime = FPlatformTime::Seconds();
 	}
 }
 
+void ATank::MoveTo(AActor* Goal, float AcceptanceRadius) {
+	if (TankMovementComponent && Goal) {
+		FVector MoveVelocity = Goal->GetActorLocation() - GetActorLocation();
+		TankMovementComponent->RequestDirectMove(MoveVelocity, 0);
+	}
+}
