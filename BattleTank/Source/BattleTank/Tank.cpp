@@ -58,6 +58,13 @@ void ATank::Fire() {
 void ATank::MoveTo(AActor* Goal, float AcceptanceRadius) {
 	if (TankMovementComponent && Goal) {
 		FVector MoveVelocity = Goal->GetActorLocation() - GetActorLocation();
-		TankMovementComponent->RequestDirectMove(MoveVelocity, 0);
+		TankMovementComponent->RequestDirectMove(MoveVelocity, false);
+	}
+}
+
+void ATank::RotateTo(AActor* Goal) {
+	if (TankMovementComponent && Goal) {
+		FVector MoveVelocity = Goal->GetActorLocation() - GetActorLocation();
+		TankMovementComponent->RequestDirectRotate(MoveVelocity, false);
 	}
 }

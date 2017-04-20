@@ -13,6 +13,7 @@ private:
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;
 	void IntendMove(FVector TargetLocation);
+	void IntendRotate(FVector TargetLocation);
 
 public:
 	UFUNCTION(BlueprintCallable, Category = Input)
@@ -26,4 +27,5 @@ public:
 		void SetTracks(UTankTrack* ALeftTrack, UTankTrack* ARightTrack);
 
 	virtual void RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed) override;
+	virtual void RequestDirectRotate(const FVector & MoveVelocity, bool bForceMaxSpeed);
 };

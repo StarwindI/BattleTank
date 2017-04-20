@@ -16,7 +16,6 @@ private:
 	ATank* GetContolledTank(bool _player);
 
 	void AimTowardsEnenmyTank();
-	bool GetSightRayHitLocation(FVector& HitLocation) const;
 
 public:
 	virtual void BeginPlay() override;

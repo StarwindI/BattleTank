@@ -43,28 +43,18 @@ ATank* ATankAIController::GetContolledTank(bool _player)
 void ATankAIController::AimTowardsEnenmyTank()
 {
 	if (EnemyTank) {
-		FVector HitLocation;
-		if (GetSightRayHitLocation(HitLocation)) {
-			if (FVector::Distance(ControlledTank->GetBarrelStartLocation(), HitLocation) <= ControlledTank->DistanceRange) {
-				if (ControlledTank->AimAt(HitLocation)) {
-					ControlledTank->Fire();
-				}
+		FVector HitLocation = EnemyTank->GetActorLocation();
+		if (FVector::Distance(ControlledTank->GetBarrelStartLocation(), HitLocation) <= ControlledTank->DistanceRange) {
+			if (ControlledTank->AimAt(HitLocation)) {
+				ControlledTank->Fire();
 			} else {
-				ControlledTank->AimAt(HitLocation);
-				MoveToActor(EnemyTank, ControlledTank->DistanceRange); // не работает
-				ControlledTank->MoveTo(EnemyTank, ControlledTank->DistanceRange);
+				ControlledTank->RotateTo(EnemyTank);
 			}
+		} else {
+			ControlledTank->AimAt(HitLocation);
+			MoveToActor(EnemyTank, ControlledTank->DistanceRange); // не работает
+			ControlledTank->MoveTo(EnemyTank, ControlledTank->DistanceRange);
 		}
 	}
 }
 
-bool ATankAIController::GetSightRayHitLocation(FVector& HitLocation) const
-{
-	if (EnemyTank) {
-		HitLocation = EnemyTank->GetActorLocation();
-		return true;
-	} else {
-		HitLocation = FVector(0);
-		return false;
-	}
-}

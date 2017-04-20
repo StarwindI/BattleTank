@@ -45,4 +45,5 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 	void MoveTo(AActor* Goal, float AcceptanceRadius);
+	void RotateTo(AActor* Goal);
 };

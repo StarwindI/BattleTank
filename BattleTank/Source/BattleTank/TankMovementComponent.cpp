@@ -24,18 +24,22 @@ void UTankMovementComponent::IntendTurnRight(float Throw) {
 
 void UTankMovementComponent::IntendMove(FVector TargetLocation) {
 	FVector SelfForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
-
-	FRotator TargetRotator = TargetLocation.Rotation();
-	FRotator SelfRotator = SelfForward.Rotation();
-	FRotator DeltaRotator = SelfRotator - TargetRotator;
-
+	FRotator DeltaRotator = SelfForward.Rotation() - TargetLocation.Rotation();
 	LeftTrack->SetThrottle(FMath::Cos(DeltaRotator.Yaw) - FMath::Sin(DeltaRotator.Yaw));
 	RightTrack->SetThrottle(FMath::Cos(DeltaRotator.Yaw) + FMath::Sin(DeltaRotator.Yaw));
-	
 }
 
+void UTankMovementComponent::IntendRotate(FVector TargetLocation) {
+	FVector SelfForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	FRotator DeltaRotator = SelfForward.Rotation() - TargetLocation.Rotation();
+	LeftTrack->SetThrottle(-FMath::Sin(DeltaRotator.Yaw));
+	RightTrack->SetThrottle(FMath::Sin(DeltaRotator.Yaw));
+}
 
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) {
 	IntendMove(MoveVelocity.GetSafeNormal());
 }
 
+void UTankMovementComponent::RequestDirectRotate(const FVector & MoveVelocity, bool bForceMaxSpeed) {
+	IntendRotate(MoveVelocity.GetSafeNormal());
+}
