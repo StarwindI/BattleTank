@@ -55,7 +55,7 @@ bool UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	bool is_elevated = FMath::Abs(DeltaRotator.Pitch) < 1;
 	Turret->Turn(DeltaRotator.Yaw);
 	Barrel->Elevate(DeltaRotator.Pitch);
-/*
+/*	трассировка взгляда
 	FHitResult HitResult;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	FVector EndLocation = StartLocation + Barrel->GetForwardVector() * DistanceLook;

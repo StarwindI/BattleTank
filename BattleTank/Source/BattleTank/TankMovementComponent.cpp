@@ -46,7 +46,6 @@ bool UTankMovementComponent::IntendRotate(FVector TargetLocation) {
 	}
 	LeftTrack->SetThrottle(-FMath::Sin(DeltaRotator.Yaw / 180 * 3.1415926));
 	RightTrack->SetThrottle(FMath::Sin(DeltaRotator.Yaw / 180 * 3.1415926));
-//	UE_LOG(LogTemp, Warning, TEXT("IntendRotate on angle %f: sin %f"), DeltaRotator.Yaw, FMath::Sin(DeltaRotator.Yaw / 180 * 3.1415926))
 	return FMath::Abs(DeltaRotator.Yaw) < 10;
 }
 

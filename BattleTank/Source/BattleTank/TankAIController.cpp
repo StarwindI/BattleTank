@@ -39,29 +39,6 @@ ATank* ATankAIController::GetContolledTank(bool _player)
 		return nullptr;
 	}
 }
-/*
-bool ATankAIController::GetLookVectorHitLocation(AActor* Goal) 
-{
-	if (Goal) {
-		FVector LookDirection = Goal->GetActorLocation();
-
-		FHitResult HitResult;
-
-		FVector StartLocation = PlayerCameraManager->GetCameraLocation();
-		FVector EndLocation = StartLocation + LookDirection * DistanceLook;
-		if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility)) {
-			HitLocation = HitResult.Location;
-			return true;
-		}
-		else {
-			HitLocation = FVector(0);
-			return false;
-		}
-	} else {
-		return false;
-	}
-}
-*/
 void ATankAIController::AimTowardsEnenmyTank()
 {
 	if (EnemyTank) {
@@ -71,14 +48,11 @@ void ATankAIController::AimTowardsEnenmyTank()
 				ControlledTank->Fire();
 			} 
 			ControlledTank->RotateTo(EnemyTank);
-/*
-			if (!ControlledTank->AimAt(HitLocation)) {
-				ControlledTank->MoveTo(EnemyTank, ControlledTank->DistanceRange);
-			}
-*/
 		} else {
 			ControlledTank->AimAt(HitLocation);
-//			MoveToActor(EnemyTank, ControlledTank->DistanceRange); // не работает
+/*
+			MoveToActor(EnemyTank, ControlledTank->DistanceRange); // не работает
+*/
 			ControlledTank->MoveTo(EnemyTank, ControlledTank->DistanceRange);
 		}
 	}
