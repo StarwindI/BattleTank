@@ -25,21 +25,35 @@ void UTankMovementComponent::IntendTurnRight(float Throw) {
 void UTankMovementComponent::IntendMove(FVector TargetLocation) {
 	FVector SelfForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
 	FRotator DeltaRotator = SelfForward.Rotation() - TargetLocation.Rotation();
-	LeftTrack->SetThrottle(FMath::Cos(DeltaRotator.Yaw) - FMath::Sin(DeltaRotator.Yaw));
-	RightTrack->SetThrottle(FMath::Cos(DeltaRotator.Yaw) + FMath::Sin(DeltaRotator.Yaw));
+	if (DeltaRotator.Yaw > 180) {
+		DeltaRotator.Yaw -= 360;
+	}
+	if (DeltaRotator.Yaw < -180) {
+		DeltaRotator.Yaw += 360;
+	}
+	LeftTrack->SetThrottle(FMath::Cos(DeltaRotator.Yaw / 180 * 3.1415926) - FMath::Sin(DeltaRotator.Yaw / 180 * 3.1415926));
+	RightTrack->SetThrottle(FMath::Cos(DeltaRotator.Yaw / 180 * 3.1415926) + FMath::Sin(DeltaRotator.Yaw / 180 * 3.1415926));
 }
 
-void UTankMovementComponent::IntendRotate(FVector TargetLocation) {
+bool UTankMovementComponent::IntendRotate(FVector TargetLocation) {
 	FVector SelfForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
 	FRotator DeltaRotator = SelfForward.Rotation() - TargetLocation.Rotation();
-	LeftTrack->SetThrottle(-FMath::Sin(DeltaRotator.Yaw));
-	RightTrack->SetThrottle(FMath::Sin(DeltaRotator.Yaw));
+	if (DeltaRotator.Yaw > 180) {
+		DeltaRotator.Yaw -= 360;
+	}
+	if (DeltaRotator.Yaw < -180) {
+		DeltaRotator.Yaw += 360;
+	}
+	LeftTrack->SetThrottle(-FMath::Sin(DeltaRotator.Yaw / 180 * 3.1415926));
+	RightTrack->SetThrottle(FMath::Sin(DeltaRotator.Yaw / 180 * 3.1415926));
+//	UE_LOG(LogTemp, Warning, TEXT("IntendRotate on angle %f: sin %f"), DeltaRotator.Yaw, FMath::Sin(DeltaRotator.Yaw / 180 * 3.1415926))
+	return FMath::Abs(DeltaRotator.Yaw) < 10;
 }
 
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) {
 	IntendMove(MoveVelocity.GetSafeNormal());
 }
 
-void UTankMovementComponent::RequestDirectRotate(const FVector & MoveVelocity, bool bForceMaxSpeed) {
-	IntendRotate(MoveVelocity.GetSafeNormal());
+bool UTankMovementComponent::RequestDirectRotate(const FVector & MoveVelocity, bool bForceMaxSpeed) {
+	return IntendRotate(MoveVelocity.GetSafeNormal());
 }

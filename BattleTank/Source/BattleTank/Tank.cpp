@@ -62,9 +62,11 @@ void ATank::MoveTo(AActor* Goal, float AcceptanceRadius) {
 	}
 }
 
-void ATank::RotateTo(AActor* Goal) {
+bool ATank::RotateTo(AActor* Goal) {
 	if (TankMovementComponent && Goal) {
 		FVector MoveVelocity = Goal->GetActorLocation() - GetActorLocation();
-		TankMovementComponent->RequestDirectRotate(MoveVelocity, false);
+		return TankMovementComponent->RequestDirectRotate(MoveVelocity, false);
+	} else {
+		return false;
 	}
 }
