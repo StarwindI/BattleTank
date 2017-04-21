@@ -13,7 +13,6 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 private:
 	ATank* ControlledTank;
 
-	ATank* GetContolledTank() const;
 	void AimTowardsCrosshair();
 	bool GetSightRayHitLocation(FVector& HitLocation) const;
 	bool GetLookDirection(FVector2D ScreenLoction, FVector& LookDirection) const;
@@ -27,6 +26,8 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 		float DistanceLook = 200000.0f;
 
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		ATank* GetContolledTank() const;
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 };

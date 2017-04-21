@@ -7,7 +7,9 @@ UCLASS()
 class BATTLETANK_API AProjectile : public AActor
 {
 	GENERATED_BODY()
-	
+
+private:
+
 protected:
 	virtual void BeginPlay() override;
 	UProjectileMovementComponent* ProjectileMovement = nullptr;

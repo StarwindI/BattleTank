@@ -34,6 +34,19 @@ bool UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float D
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 	if (bHaveAimSolution) {
+/*
+		FVector EndLocation = StartLocation + Barrel->GetForwardVector().GetSafeNormal() * DistanceRange;
+		DrawDebugLine(
+			GetWorld(),
+			StartLocation,
+			EndLocation,
+			FColor(255, 0, 0),
+			false,
+			0.0f,
+			0.0f,
+			3.0f
+		);
+*/
 		FVector AimDirection = OutLounchVelocity.GetSafeNormal();
 		return MoveBarrelTowards(AimDirection);
 	} else {

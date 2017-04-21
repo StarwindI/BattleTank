@@ -7,13 +7,14 @@
 
 ATank::ATank() {
 	PrimaryActorTick.bCanEverTick = false;
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+//	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 }
 
 void ATank::BeginPlay() {
 	Super::BeginPlay();
 	FireTime = FPlatformTime::Seconds();
 	TankMovementComponent = FindComponentByClass<UTankMovementComponent>();
+	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
@@ -21,12 +22,16 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 }
 
 void ATank::SetTurret(UTankTurret* ATurret) {
-	TankAimingComponent->SetTurret(ATurret);
+	if (TankAimingComponent) {
+		TankAimingComponent->SetTurret(ATurret);
+	}
 }
 
 void ATank::SetBarrel(UTankBarrel* ABarrel) {
 	Barrel = ABarrel;
-	TankAimingComponent->SetBarrel(ABarrel);
+	if (TankAimingComponent) {
+		TankAimingComponent->SetBarrel(ABarrel);
+	}
 }
 
 FVector ATank::GetBarrelStartLocation() const {
@@ -39,7 +44,11 @@ FVector ATank::GetBarrelStartLocation() const {
 }
 
 bool ATank::AimAt(FVector HitLocation) const {
-	return TankAimingComponent->AimAt(HitLocation, LounchSpeed, DistanceRange);
+	if (TankAimingComponent) {
+		return TankAimingComponent->AimAt(HitLocation, LounchSpeed, DistanceRange);
+	else {
+		return false;
+	}
 }
 
 void ATank::Fire() {

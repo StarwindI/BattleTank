@@ -11,7 +11,6 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void AProjectile::Tick(float DeltaTime)

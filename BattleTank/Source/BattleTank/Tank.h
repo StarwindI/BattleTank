@@ -19,9 +19,10 @@ private:
 	float FireTime;
 
 protected:
-	UTankAimingComponent* TankAimingComponent = nullptr;
 	UPROPERTY(BlueprintReadOnly)
-	UTankMovementComponent* TankMovementComponent = nullptr;
+		UTankAimingComponent* TankAimingComponent = nullptr;
+	UPROPERTY(BlueprintReadOnly)
+		UTankMovementComponent* TankMovementComponent = nullptr;
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
