@@ -10,11 +10,10 @@ enum class EFiringState : uint8 {
 	Locked
 };
 
-
 class UTankTurret;
 class UTankBarrel;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY() 
@@ -33,6 +32,9 @@ public:
 	UTankAimingComponent();
 
 	bool AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange);
-	void SetTurret(UTankTurret* ATurret);
-	void SetBarrel(UTankBarrel* ABarrel);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetTurret(UTankTurret* ATurret);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetBarrel(UTankBarrel* ABarrel);
+	UTankBarrel* GetBarrel();
 };

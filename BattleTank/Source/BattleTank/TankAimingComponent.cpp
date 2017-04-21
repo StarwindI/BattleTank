@@ -18,6 +18,10 @@ void UTankAimingComponent::SetBarrel(UTankBarrel* ABarrel)
 	Barrel = ABarrel;
 }
 
+UTankBarrel* UTankAimingComponent::GetBarrel() {
+	return Barrel;
+}
+
 bool UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange)
 {
 	FVector OutLounchVelocity;

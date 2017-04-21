@@ -36,15 +36,12 @@ public:
 
 	ATank();
 	virtual void BeginPlay() override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	FVector GetBarrelStartLocation() const;
 	bool AimAt(FVector HitLocation) const;
-	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetTurret(UTankTurret* ATurret);
-	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrel(UTankBarrel* ABarrel);
-	UFUNCTION(BlueprintCallable)
-	void Fire();
 	void MoveTo(AActor* Goal, float AcceptanceRadius);
 	bool RotateTo(AActor* Goal);
+	UFUNCTION(BlueprintCallable)
+		void Fire();
 };
