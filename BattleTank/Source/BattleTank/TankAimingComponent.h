@@ -33,8 +33,7 @@ public:
 
 	bool AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange);
 	UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetTurret(UTankTurret* ATurret);
-	UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetBarrel(UTankBarrel* ABarrel);
+		void SetTurretBarrel(UTankTurret* ATurret, UTankBarrel* ABarrel);
+
 	UTankBarrel* GetBarrel();
 };

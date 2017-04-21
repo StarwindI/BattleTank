@@ -3,18 +3,12 @@
 #include "TankBarrel.h"
 #include "TankAimingComponent.h"
 
-UTankAimingComponent::UTankAimingComponent() 
-{
+UTankAimingComponent::UTankAimingComponent() {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UTankAimingComponent::SetTurret(UTankTurret* ATurret)
-{
+void UTankAimingComponent::SetTurretBarrel(UTankTurret* ATurret, UTankBarrel* ABarrel) {
 	Turret = ATurret;
-}
-
-void UTankAimingComponent::SetBarrel(UTankBarrel* ABarrel)
-{
 	Barrel = ABarrel;
 }
 
@@ -22,8 +16,7 @@ UTankBarrel* UTankAimingComponent::GetBarrel() {
 	return Barrel;
 }
 
-bool UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange)
-{
+bool UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange) {
 	FVector OutLounchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
@@ -58,8 +51,7 @@ bool UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float D
 	}
 }
 
-bool UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
-{
+bool UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
 	FRotator DeltaRotator = AimAsRotator - BarrelRotator;
