@@ -3,7 +3,6 @@
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
-class ATank;
 class UTankAimingComponent;
 
 UCLASS()
@@ -12,7 +11,7 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 
 private:
-	ATank* ControlledTank;
+	UTankAimingComponent* AimingComponent;
 
 	void AimTowardsCrosshair();
 	bool GetSightRayHitLocation(FVector& HitLocation) const;
@@ -20,8 +19,6 @@ private:
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = Setup)
-		ATank* GetContolledTank() const;
 	UFUNCTION(BlueprintImplementableEvent, Category = Setup)
 		void FoundAimingComponent(UTankAimingComponent* AimingComponentReference);
 

@@ -6,10 +6,10 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	ControlledTank = GetContolledTank();
+	ATank* ControlledTank = Cast<ATank>(GetPawn());
 	if (ControlledTank) {
 		UE_LOG(LogTemp, Warning, TEXT("PlayerController: tank %s is ready!"), *ControlledTank->GetName())
-		UTankAimingComponent* AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+		AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 		if (AimingComponent) {
 			FoundAimingComponent(AimingComponent);
 		}
@@ -24,17 +24,12 @@ void ATankPlayerController::Tick(float DeltaTime)
 	AimTowardsCrosshair();
 }
 
-ATank* ATankPlayerController::GetContolledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (ControlledTank) {
+	if (AimingComponent) {
 		FVector HitLocation;
 		if (GetSightRayHitLocation(HitLocation)) {
-			ControlledTank->AimAt(HitLocation);
+			AimingComponent->AimAt(HitLocation);
 		}
 	}
 }
@@ -60,9 +55,10 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const
 {
+	if (!ensure(AimingComponent)) { return false; }
 	FHitResult HitResult;
 	FVector StartLocation = PlayerCameraManager->GetCameraLocation();
-	FVector EndLocation = StartLocation + LookDirection * DistanceLook;
+	FVector EndLocation = StartLocation + LookDirection * AimingComponent->DistanceLook;
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility)) {
 		HitLocation = HitResult.Location;
 		return true;

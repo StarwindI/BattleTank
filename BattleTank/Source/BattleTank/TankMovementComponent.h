@@ -9,6 +9,7 @@ UCLASS( ClassGroup = (Custom), meta = (BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
 {
 	GENERATED_BODY()
+
 private:
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;

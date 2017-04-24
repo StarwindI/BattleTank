@@ -14,9 +14,7 @@ private:
 	ATank* ControlledTank;
 	ATank* EnemyTank;
 	ATank* GetContolledTank(bool _player);
-
 	void AimTowardsEnenmyTank();
-//	bool GetLookVectorHitLocation(AActor* Goal);
 
 public:
 	virtual void BeginPlay() override;

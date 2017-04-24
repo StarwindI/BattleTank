@@ -1,5 +1,7 @@
 #include "BattleTank.h"
 #include "Tank.h"
+#include "TankMovementComponent.h"
+#include "TankAimingComponent.h"
 #include "TankAIController.h"
 
 void ATankAIController::BeginPlay()
@@ -41,19 +43,21 @@ ATank* ATankAIController::GetContolledTank(bool _player)
 }
 void ATankAIController::AimTowardsEnenmyTank()
 {
-	if (EnemyTank) {
+	if (ControlledTank && EnemyTank) {
 		FVector HitLocation = EnemyTank->GetActorLocation();
-		if (FVector::Distance(ControlledTank->GetBarrelStartLocation(), HitLocation) <= ControlledTank->DistanceRange) {
-			if (ControlledTank->AimAt(HitLocation)) {
-				ControlledTank->Fire();
-			} 
-			ControlledTank->RotateTo(EnemyTank);
-		} else {
-			ControlledTank->AimAt(HitLocation);
-/*
-			MoveToActor(EnemyTank, ControlledTank->DistanceRange); // не работает
-*/
-			ControlledTank->MoveTo(EnemyTank, ControlledTank->DistanceRange);
+		UTankAimingComponent* AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+		UTankMovementComponent* MovementComponent = ControlledTank->FindComponentByClass<UTankMovementComponent>();
+		if (AimingComponent) {
+			if (AimingComponent->DistanceAt(HitLocation)) {
+				if (AimingComponent->AimAt(HitLocation)) {
+					AimingComponent->Fire();
+				}
+				MovementComponent->RequestDirectRotate(EnemyTank->GetActorLocation() - ControlledTank->GetActorLocation(), false);
+			} else {
+//				MoveToActor(EnemyTank, ControlledTank->DistanceRange); // не работает
+				AimingComponent->AimAt(HitLocation);
+				MovementComponent->RequestDirectMove(EnemyTank->GetActorLocation() - ControlledTank->GetActorLocation(), false);
+			}
 		}
 	}
 }

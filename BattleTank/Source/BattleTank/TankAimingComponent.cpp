@@ -1,6 +1,7 @@
 #include "BattleTank.h"
 #include "TankTurret.h"
 #include "TankBarrel.h"
+#include "Projectile.h"
 #include "TankAimingComponent.h"
 
 UTankAimingComponent::UTankAimingComponent() {
@@ -10,45 +11,6 @@ UTankAimingComponent::UTankAimingComponent() {
 void UTankAimingComponent::SetTurretBarrel(UTankTurret* ATurret, UTankBarrel* ABarrel) {
 	Turret = ATurret;
 	Barrel = ABarrel;
-}
-
-UTankBarrel* UTankAimingComponent::GetBarrel() {
-	return Barrel;
-}
-
-bool UTankAimingComponent::AimAt(FVector HitLocation, float LounchSpeed, float DistanceRange) {
-	FVector OutLounchVelocity;
-	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
-		this,
-		OutLounchVelocity,
-		StartLocation,
-		HitLocation,
-		LounchSpeed,
-		false,
-		0,
-		0,
-		ESuggestProjVelocityTraceOption::DoNotTrace
-	);
-	if (bHaveAimSolution) {
-/*
-		FVector EndLocation = StartLocation + Barrel->GetForwardVector().GetSafeNormal() * DistanceRange;
-		DrawDebugLine(
-			GetWorld(),
-			StartLocation,
-			EndLocation,
-			FColor(255, 0, 0),
-			false,
-			0.0f,
-			0.0f,
-			3.0f
-		);
-*/
-		FVector AimDirection = OutLounchVelocity.GetSafeNormal();
-		return MoveBarrelTowards(AimDirection);
-	} else {
-		return false;
-	}
 }
 
 bool UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
@@ -64,13 +26,55 @@ bool UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
 	bool is_elevated = FMath::Abs(DeltaRotator.Pitch) < 1;
 	Turret->Turn(DeltaRotator.Yaw);
 	Barrel->Elevate(DeltaRotator.Pitch);
-/*	трассировка взгляда
+	/*	трассировка взгляда
 	FHitResult HitResult;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	FVector EndLocation = StartLocation + Barrel->GetForwardVector() * DistanceLook;
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility)) {
-		HitResult.Actor;
+	HitResult.Actor;
 	}
-*/
+	*/
 	return FMath::Abs(DeltaRotator.Yaw) < 1 && FMath::Abs(DeltaRotator.Pitch) < 1;
+}
+
+bool UTankAimingComponent::DistanceAt(FVector HitLocation) {
+	if (ensure(Barrel)) {
+		return FVector::Distance(Barrel->GetSocketLocation(FName("Projectile")), HitLocation) <= DistanceShot;
+	}	else {
+		return false;
+	}
+}
+
+bool UTankAimingComponent::AimAt(FVector HitLocation) {
+	FVector OutLounchVelocity;
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
+		this,
+		OutLounchVelocity,
+		StartLocation,
+		HitLocation,
+		LounchSpeed,
+		false,
+		0,
+		0,
+		ESuggestProjVelocityTraceOption::DoNotTrace
+	);
+	if (bHaveAimSolution) {
+		FVector AimDirection = OutLounchVelocity.GetSafeNormal();
+		return MoveBarrelTowards(AimDirection);
+	} else {
+		return false;
+	}
+}
+
+void UTankAimingComponent::Fire() {
+	if (Barrel && FPlatformTime::Seconds() >= FireTime + ReloadTime) {
+		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Projectile")),
+			Barrel->GetSocketRotation(FName("Projectile"))
+		);
+		Projectile->LaunchProjectile(LounchSpeed);
+		FireTime = FPlatformTime::Seconds();
+	}
 }

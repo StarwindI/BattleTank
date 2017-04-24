@@ -9,7 +9,7 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
 		float TrackMaxDrivingForce = 100000.0f;
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
