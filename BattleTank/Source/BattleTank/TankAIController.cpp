@@ -26,18 +26,8 @@ ATank* ATankAIController::GetContolledTank(bool _player)
 		result = Cast<ATank>(GetPawn());
 	}
 	if (result) {
-		if (_player) {
-			UE_LOG(LogTemp, Warning, TEXT("AIController: player tank %s was found at location %s"), *result->GetName(), *result->GetActorLocation().ToString())
-		} else {
-			UE_LOG(LogTemp, Warning, TEXT("AIController: tank %s is ready at location %s"), *result->GetName(), *result->GetActorLocation().ToString())
-		}
 		return result;
 	} else {
-		if (_player) {
-			UE_LOG(LogTemp, Error, TEXT("AIController: player tank not found!"))
-		} else {
-			UE_LOG(LogTemp, Error, TEXT("AIController: tank not found!"))
-		}
 		return nullptr;
 	}
 }

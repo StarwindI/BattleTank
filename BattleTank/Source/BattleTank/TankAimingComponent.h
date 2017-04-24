@@ -20,7 +20,7 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY() 
 
 private:
-	float FireTime = FPlatformTime::Seconds();
+	float FireTime;
 
 protected:
 	UTankTurret* Turret = nullptr;
@@ -41,8 +41,11 @@ public:
 		float DistanceLook = 200000.0f;
 	UPROPERTY(EditAnywhere, Category = Firing)
 		TSubclassOf<AProjectile> ProjectileBlueprint;
-	UTankAimingComponent();
 
+	UTankAimingComponent();
+	virtual void BeginPlay() override;
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+	bool Reloaded();
 	bool DistanceAt(FVector HitLocation);
 	bool AimAt(FVector HitLocation);
 	UFUNCTION(BlueprintCallable)

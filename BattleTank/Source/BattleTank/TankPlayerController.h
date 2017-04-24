@@ -27,8 +27,6 @@ public:
 		float CrosshairXLocation = 0.5f;
 	UPROPERTY(EditDefaultsOnly)
 		float CrosshairYLocation = 0.33333f;
-	UPROPERTY(EditDefaultsOnly)
-		float DistanceLook = 200000.0f;
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

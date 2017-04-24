@@ -5,7 +5,17 @@
 #include "TankAimingComponent.h"
 
 UTankAimingComponent::UTankAimingComponent() {
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void UTankAimingComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	FireTime = FPlatformTime::Seconds();
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) {
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void UTankAimingComponent::SetTurretBarrel(UTankTurret* ATurret, UTankBarrel* ABarrel) {
@@ -26,14 +36,6 @@ bool UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
 	bool is_elevated = FMath::Abs(DeltaRotator.Pitch) < 1;
 	Turret->Turn(DeltaRotator.Yaw);
 	Barrel->Elevate(DeltaRotator.Pitch);
-	/*	трассировка взгляда
-	FHitResult HitResult;
-	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-	FVector EndLocation = StartLocation + Barrel->GetForwardVector() * DistanceLook;
-	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility)) {
-	HitResult.Actor;
-	}
-	*/
 	return FMath::Abs(DeltaRotator.Yaw) < 1 && FMath::Abs(DeltaRotator.Pitch) < 1;
 }
 
@@ -43,6 +45,10 @@ bool UTankAimingComponent::DistanceAt(FVector HitLocation) {
 	}	else {
 		return false;
 	}
+}
+
+bool UTankAimingComponent::Reloaded() {
+	return FPlatformTime::Seconds() >= FireTime + ReloadTime;
 }
 
 bool UTankAimingComponent::AimAt(FVector HitLocation) {
@@ -68,7 +74,7 @@ bool UTankAimingComponent::AimAt(FVector HitLocation) {
 }
 
 void UTankAimingComponent::Fire() {
-	if (Barrel && FPlatformTime::Seconds() >= FireTime + ReloadTime) {
+	if (ensure(Barrel) && ensure(ProjectileBlueprint) && Reloaded()) {
 		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
