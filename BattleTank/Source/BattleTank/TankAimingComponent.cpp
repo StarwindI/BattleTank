@@ -50,7 +50,8 @@ bool UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
 	
 	Turret->Turn(DeltaRotator.Yaw);
 	Barrel->Elevate(DeltaRotator.Pitch);
-	return CheckState(FMath::Abs(DeltaRotator.Yaw) < 1 && FMath::Abs(DeltaRotator.Pitch) < 1, FPlatformTime::Seconds() >= FireTime + ReloadTime) != EFiringState::Aiming;
+//	return CheckState(FMath::Abs(DeltaRotator.Yaw) < 1 && FMath::Abs(DeltaRotator.Pitch) < 1, FPlatformTime::Seconds() >= FireTime + ReloadTime) != EFiringState::Aiming;
+	return CheckState(AimDirection.Equals(Barrel->GetForwardVector().GetSafeNormal(), 0.1f), FPlatformTime::Seconds() >= FireTime + ReloadTime) != EFiringState::Aiming;
 }
 
 bool UTankAimingComponent::DistanceAt(FVector HitLocation) {
