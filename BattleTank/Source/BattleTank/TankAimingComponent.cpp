@@ -12,6 +12,7 @@ void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	FireTime = FPlatformTime::Seconds();
+	FiringState = EFiringState::Reloading;
 }
 
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) {
@@ -21,6 +22,19 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 void UTankAimingComponent::SetTurretBarrel(UTankTurret* ATurret, UTankBarrel* ABarrel) {
 	Turret = ATurret;
 	Barrel = ABarrel;
+}
+
+EFiringState UTankAimingComponent::CheckState(bool is_elevated, bool is_reloaded) {
+	if (!is_elevated) {
+		FiringState = EFiringState::Aiming;
+	} else 
+	if (!is_reloaded) {
+		FiringState = EFiringState::Reloading;
+	}
+	else {
+		FiringState = EFiringState::Ready;
+	}
+	return FiringState;
 }
 
 bool UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
@@ -33,10 +47,10 @@ bool UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
 	if (DeltaRotator.Yaw < -180) {
 		DeltaRotator.Yaw += 360;
 	}
-	bool is_elevated = FMath::Abs(DeltaRotator.Pitch) < 1;
+	
 	Turret->Turn(DeltaRotator.Yaw);
 	Barrel->Elevate(DeltaRotator.Pitch);
-	return FMath::Abs(DeltaRotator.Yaw) < 1 && FMath::Abs(DeltaRotator.Pitch) < 1;
+	return CheckState(FMath::Abs(DeltaRotator.Yaw) < 1 && FMath::Abs(DeltaRotator.Pitch) < 1, FPlatformTime::Seconds() >= FireTime + ReloadTime) != EFiringState::Aiming;
 }
 
 bool UTankAimingComponent::DistanceAt(FVector HitLocation) {
@@ -48,7 +62,7 @@ bool UTankAimingComponent::DistanceAt(FVector HitLocation) {
 }
 
 bool UTankAimingComponent::Reloaded() {
-	return FPlatformTime::Seconds() >= FireTime + ReloadTime;
+	return CheckState(FiringState != EFiringState::Aiming, FPlatformTime::Seconds() >= FireTime + ReloadTime) != EFiringState::Reloading;
 }
 
 bool UTankAimingComponent::AimAt(FVector HitLocation) {
