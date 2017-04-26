@@ -5,9 +5,13 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-	if (AimingComponent) {
-		FoundAimingComponent(AimingComponent);
+	if (GetPawn()) {
+		AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+		if (AimingComponent) {
+			FoundAimingComponent(AimingComponent);
+		}
+	} else {
+		AimingComponent = nullptr;
 	}
 }
 

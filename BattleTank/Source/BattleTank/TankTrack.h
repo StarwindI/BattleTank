@@ -8,6 +8,10 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 
+private:
+	UTankTrack();
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
 public:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 		float TrackMaxDrivingForce = 100000.0f;
