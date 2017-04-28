@@ -2,12 +2,23 @@
 #include "TankTrack.h"
 
 UTankTrack::UTankTrack() {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+void UTankTrack::BeginPlay()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	Super::BeginPlay();
+	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
+}
+
+void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit) {
+	DriveTrack();
+	ApplaySidewaysForce(GetWorld()->GetDeltaSeconds());
+	CurrentThrottle = 0.0f;
+}
+
+void UTankTrack::ApplaySidewaysForce(float DeltaTime)
+{
 	auto SlippageSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
 	auto CorrectAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
 	auto TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
@@ -17,12 +28,18 @@ void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActor
 
 
 void UTankTrack::SetThrottle(float Throttle) {
-	FVector ForceApplied = Throttle * GetForwardVector() * TrackMaxDrivingForce;
+	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle, -1.0f, 1.2f);
+}
+
+void UTankTrack::DriveTrack()
+{
+	FVector ForceApplied = CurrentThrottle * GetForwardVector() * TrackMaxDrivingForce;
 	FVector ForceLocation = GetComponentLocation();
-// TODO find actual altitude Z
+	// TODO find actual altitude Z
 	ForceLocation.Z += 100.0f;
 	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
 }
+
 
 

@@ -11,6 +11,11 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+//	OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+}
+
+void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit) {
+	Destroy();
 }
 
 void AProjectile::Tick(float DeltaTime)
