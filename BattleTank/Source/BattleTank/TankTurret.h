@@ -12,7 +12,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 		float MaxDegreesPerSecond = 20;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
-		int ProjectileCount = 20;
+		int32 ProjectileCount = 20;
 
 	void Turn(float RelativeSpeed);
 };
