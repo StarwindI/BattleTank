@@ -60,12 +60,14 @@ Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
 Binaries/
 Build/
 DerivedDataCache/
 Saved/
 Intermediate/
-Content/StarterContent/
-*.VC.db
+
 *.VC.opendb
 *.VC.db
+
+.vs/
