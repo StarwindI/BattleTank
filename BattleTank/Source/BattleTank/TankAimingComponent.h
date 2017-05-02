@@ -7,7 +7,8 @@ UENUM()
 enum class EFiringState : uint8 {
 	Reloading,
 	Aiming,
-	Ready
+	Ready,
+	Empty
 };
 
 class UTankTurret;
@@ -51,7 +52,8 @@ public:
 	EFiringState CheckState(bool is_elevated, bool is_reloaded);
 	UFUNCTION(BlueprintCallable)
 		void Fire();
-
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetTurretBarrel(UTankTurret* ATurret, UTankBarrel* ABarrel);
+	UFUNCTION(BlueprintCallable)
+		int GetProjectileCount();
 };

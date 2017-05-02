@@ -24,7 +24,14 @@ void UTankAimingComponent::SetTurretBarrel(UTankTurret* ATurret, UTankBarrel* AB
 	Barrel = ABarrel;
 }
 
+int UTankAimingComponent::GetProjectileCount() {
+	return Turret->ProjectileCount;
+}
+
 EFiringState UTankAimingComponent::CheckState(bool is_elevated, bool is_reloaded) {
+	if (Turret->ProjectileCount == 0) {
+		FiringState = EFiringState::Empty;
+	} else
 	if (!is_reloaded) {
 		FiringState = EFiringState::Reloading;
 	} else 
@@ -87,7 +94,7 @@ bool UTankAimingComponent::AimAt(FVector HitLocation) {
 }
 
 void UTankAimingComponent::Fire() {
-	if (ensure(Barrel) && ensure(ProjectileBlueprint) && Reloaded()) {
+	if (ensure(Barrel) && ensure(ProjectileBlueprint) && Reloaded() && Turret->ProjectileCount > 0) {
 		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
@@ -95,5 +102,6 @@ void UTankAimingComponent::Fire() {
 		);
 		Projectile->LaunchProjectile(LounchSpeed);
 		FireTime = FPlatformTime::Seconds();
+		Turret->ProjectileCount--;
 	}
 }
