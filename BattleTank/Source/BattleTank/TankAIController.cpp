@@ -1,5 +1,4 @@
 #include "BattleTank.h"
-#include "Tank.h"
 #include "TankMovementComponent.h"
 #include "TankAimingComponent.h"
 #include "TankAIController.h"
@@ -17,13 +16,13 @@ void ATankAIController::Tick(float DeltaTime)
 	AimTowardsEnenmyTank();
 }
 
-ATank* ATankAIController::GetContolledTank(bool _player) 
+APawn* ATankAIController::GetContolledTank(bool _player) 
 {
-	ATank* result;
+	APawn* result;
 	if (_player) {
-		result = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn()); 
+		result = GetWorld()->GetFirstPlayerController()->GetPawn();
 	} else {
-		result = Cast<ATank>(GetPawn());
+		result = GetPawn();
 	}
 	if (result) {
 		return result;
@@ -42,11 +41,15 @@ void ATankAIController::AimTowardsEnenmyTank()
 				if (AimingComponent->AimAt(HitLocation)) {
 					AimingComponent->Fire();
 				}
-				MovementComponent->RequestDirectRotate(EnemyTank->GetActorLocation() - ControlledTank->GetActorLocation(), false);
+				if (MovementComponent) {
+					MovementComponent->RequestDirectRotate(EnemyTank->GetActorLocation() - ControlledTank->GetActorLocation(), false);
+				}
 			} else {
 //				MoveToActor(EnemyTank, ControlledTank->DistanceRange); // не работает
 				AimingComponent->AimAt(HitLocation);
-				MovementComponent->RequestDirectMove(EnemyTank->GetActorLocation() - ControlledTank->GetActorLocation(), false);
+				if (MovementComponent) {
+					MovementComponent->RequestDirectMove(EnemyTank->GetActorLocation() - ControlledTank->GetActorLocation(), false);
+				}
 			}
 		}
 	}
