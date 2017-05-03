@@ -45,8 +45,8 @@ void ATankAIController::AimTowardsEnenmyTank()
 					MovementComponent->RequestDirectRotate(EnemyTank->GetActorLocation() - ControlledTank->GetActorLocation(), false);
 				}
 			} else {
-//				MoveToActor(EnemyTank, ControlledTank->DistanceRange); // не работает
 				AimingComponent->AimAt(HitLocation);
+//				MoveToActor(EnemyTank, AimingComponent->DistanceShot);
 				if (MovementComponent) {
 					MovementComponent->RequestDirectMove(EnemyTank->GetActorLocation() - ControlledTank->GetActorLocation(), false);
 				}
