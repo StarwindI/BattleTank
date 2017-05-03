@@ -66,6 +66,7 @@ Build/
 DerivedDataCache/
 Saved/
 Intermediate/
+Content/StarterContent/
 
 *.VC.opendb
 *.VC.db
