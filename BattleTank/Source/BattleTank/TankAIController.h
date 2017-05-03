@@ -11,7 +11,7 @@ class BATTLETANK_API ATankAIController : public AAIController
 private:
 	APawn* ControlledTank;
 	APawn* EnemyTank;
-	APawn* GetContolledTank(bool _player);
+	APawn* GetContolledTank(bool self);
 	void AimTowardsEnenmyTank();
 
 public:

@@ -6,8 +6,8 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	ControlledTank = GetContolledTank(false);
-	EnemyTank = GetContolledTank(true);
+	ControlledTank = GetContolledTank(true);
+	EnemyTank = GetContolledTank(false);
 }
 
 void ATankAIController::Tick(float DeltaTime)
@@ -16,13 +16,13 @@ void ATankAIController::Tick(float DeltaTime)
 	AimTowardsEnenmyTank();
 }
 
-APawn* ATankAIController::GetContolledTank(bool _player) 
+APawn* ATankAIController::GetContolledTank(bool self) 
 {
 	APawn* result;
-	if (_player) {
-		result = GetWorld()->GetFirstPlayerController()->GetPawn();
-	} else {
+	if (self) {
 		result = GetPawn();
+	} else {
+		result = GetWorld()->GetFirstPlayerController()->GetPawn();
 	}
 	if (result) {
 		return result;
