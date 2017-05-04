@@ -15,7 +15,6 @@ private:
 	APawn* EnemyTank;
 	APawn* GetContolledTank(bool self);
 	void AimTowardsEnenmyTank();
-	void DetachFromControllerPendingDestroy();
 
 public:
 	virtual void BeginPlay() override;

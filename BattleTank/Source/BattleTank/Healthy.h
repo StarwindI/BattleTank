@@ -13,7 +13,7 @@ class BATTLETANK_API AHealthy : public APawn
 private:
 		UPROPERTY(EditDefaultsOnly, Category = Setup)
 	int32 Health = 1000;
-	int32 CurrentHealth = Health;
+	int32 CurrentHealth;
 
 
 protected:

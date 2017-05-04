@@ -19,7 +19,6 @@ private:
 	bool GetSightRayHitLocation(FVector& HitLocation) const;
 	bool GetLookDirection(FVector2D ScreenLoction, FVector& LookDirection) const;
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
-	void StartSpectactingOnly();
 
 protected:
 		UFUNCTION(BlueprintImplementableEvent, Category = Setup)

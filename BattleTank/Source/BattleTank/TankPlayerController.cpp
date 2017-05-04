@@ -33,13 +33,8 @@ void ATankPlayerController::SetPawn(APawn* InPawn) {
 }
 
 void ATankPlayerController::OnDeath() {
-	StartSpectactingOnly();
+	StartSpectatingOnly();
 }
-
-void ATankPlayerController::StartSpectactingOnly() {
-
-}
-
 
 void ATankPlayerController::AimTowardsCrosshair()
 {

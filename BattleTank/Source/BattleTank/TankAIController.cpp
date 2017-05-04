@@ -18,11 +18,9 @@ void ATankAIController::Tick(float DeltaTime)
 }
 
 void ATankAIController::OnDeath() {
-	DetachFromControllerPendingDestroy();
-}
-
-void ATankAIController::DetachFromControllerPendingDestroy() {
-
+	if (ControlledTank) {
+		ControlledTank->DetachFromControllerPendingDestroy();
+	}
 }
 
 void ATankAIController::SetPawn(APawn* InPawn) {

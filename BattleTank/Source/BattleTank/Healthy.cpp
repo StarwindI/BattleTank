@@ -34,7 +34,7 @@ float AHealthy::GetHealthPercent() const {
 
 FLinearColor AHealthy::GetHealthColor() const {
 	float health = GetHealthPercent();
-	if (health >= 0.7) {
+	if (health >= 0.6) {
 		return FLinearColor(0.0f, 1.0f, 0.0f, 1.0f);
 	} else 
 	if (health >= 0.3) {
