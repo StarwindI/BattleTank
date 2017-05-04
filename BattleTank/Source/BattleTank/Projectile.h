@@ -26,6 +26,8 @@ public:
 	URadialForceComponent* ExplosionForce = nullptr;
 		UPROPERTY(EditDefaultsOnly, Category = Setup)
 	float DestroyDelay = 5.0f;
+		UPROPERTY(EditDefaultsOnly, Category = Setup)
+	float DestroyDamage = 100.0f;
 
 
 	AProjectile();
