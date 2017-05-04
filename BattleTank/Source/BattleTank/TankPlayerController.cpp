@@ -1,4 +1,5 @@
 #include "BattleTank.h"
+#include "Healthy.h"
 #include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
@@ -20,6 +21,25 @@ void ATankPlayerController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	AimTowardsCrosshair();
 }
+
+void ATankPlayerController::SetPawn(APawn* InPawn) {
+	Super::SetPawn(InPawn);
+	if (InPawn) {
+		AHealthy* PossessedHealthy = Cast<AHealthy>(InPawn);
+		if (ensure(PossessedHealthy)) {
+			PossessedHealthy->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnDeath);
+		}
+	}
+}
+
+void ATankPlayerController::OnDeath() {
+	StartSpectactingOnly();
+}
+
+void ATankPlayerController::StartSpectactingOnly() {
+
+}
+
 
 void ATankPlayerController::AimTowardsCrosshair()
 {

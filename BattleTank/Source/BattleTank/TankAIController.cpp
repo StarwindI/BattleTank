@@ -1,4 +1,5 @@
 #include "BattleTank.h"
+#include "Healthy.h"
 #include "TankMovementComponent.h"
 #include "TankAimingComponent.h"
 #include "TankAIController.h"
@@ -14,6 +15,24 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	AimTowardsEnenmyTank();
+}
+
+void ATankAIController::OnDeath() {
+	DetachFromControllerPendingDestroy();
+}
+
+void ATankAIController::DetachFromControllerPendingDestroy() {
+
+}
+
+void ATankAIController::SetPawn(APawn* InPawn) {
+	Super::SetPawn(InPawn);
+	if (InPawn) {
+		AHealthy* PossessedHealthy = Cast<AHealthy>(InPawn);
+		if (ensure(PossessedHealthy)) {
+			PossessedHealthy->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnDeath);
+		}
+	}
 }
 
 APawn* ATankAIController::GetContolledTank(bool self) 
