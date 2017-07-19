@@ -19,7 +19,9 @@ void ATankPlayerController::BeginPlay()
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AimTowardsCrosshair();
+	if (ALive) {
+		AimTowardsCrosshair();
+	}
 }
 
 void ATankPlayerController::SetPawn(APawn* InPawn) {
@@ -33,6 +35,7 @@ void ATankPlayerController::SetPawn(APawn* InPawn) {
 }
 
 void ATankPlayerController::OnDeath() {
+	ALive = false;
 	StartSpectatingOnly();
 }
 

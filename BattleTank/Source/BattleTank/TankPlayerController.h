@@ -12,6 +12,7 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 
 private:
 	UTankAimingComponent* AimingComponent;
+	bool ALive = true;
 
 		UFUNCTION()
 	void OnDeath();
